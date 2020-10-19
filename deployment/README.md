@@ -23,9 +23,9 @@ It is currently distrubuted in three different ways:
 
 * **valetudo_**_**version**_**_armhf.deb**
 
-   This is a package containing both valetudo binary and its configuration files. 
+   This is a package containing both valetudo binary and its configuration files.
    You need to put it on the device to i.e. /mnt/data directory and then it can be
-   installed by issuing `dpkg -i filename.deb` on the console. 
+   installed by issuing `dpkg -i filename.deb` on the console.
    It will unpack itself and put all the files to the required places, so you won't
    need to create them yourself. After installation you will only have to restart
    the device using `reboot` command.
@@ -88,6 +88,16 @@ file on the robot.
 
 Second edit the `/etc/rc.local` file and add the content of
 `deployment/etc/rc.local` before the `exit 0` line.
+
+### Create self-signed rsa key and cert for enforced https (optional)
+```
+mkdir -p /mnt/data/valetudo
+cd /mnt/data/valetudo
+openssl genrsa -out key.pem 4096
+openssl req -new -key key.pem -out csr.pem
+openssl x509 -req -days 9999 -in csr.pem -signkey key.pem -out cert.pem
+rm csr.pem
+```
 
 ### Reboot
 
